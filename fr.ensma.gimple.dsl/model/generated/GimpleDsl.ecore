@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="gimpleDsl" nsURI="http://www.ensma.fr/GimpleDsl" nsPrefix="gimpleDsl">
+  <eClassifiers xsi:type="ecore:EClass" name="TAC">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="functionDef" upperBound="-1"
+        eType="#//FunctionDef" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commentLine" upperBound="-1"
+        eType="#//CommentLine" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FunctionDef">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="name" eType="#//Function"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="functionparam" upperBound="-1"
+        eType="#//FunctionParam" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="CodeBlock" eType="#//CodeBlock"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CodeBlock">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instruction" upperBound="-1"
+        eType="#//Instruction" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Instruction">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variableDeclaration" eType="#//VariableDeclaration"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="varaibleCall" eType="#//VariableCall"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constantDelaration" eType="#//Declaration"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tempVariable" eType="#//TempVariable"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="struct" eType="#//Struct"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="LabelDef" eType="#//LabelDef"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="switchLabelDef" eType="#//SwitchLabelDef"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="goto" eType="#//Goto" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="if" eType="#//If" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expressionTemporarie" eType="#//ExpressionTemporarie"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="switchStatement" eType="#//SwitchStatment"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="debugTag" eType="#//DebugTag"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="functionCall" eType="#//FunctionCall"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="assignOp" eType="#//AssignOperation"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FunctionCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="calledFunction" eType="#//Function"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="functionArgument" upperBound="-1"
+        eType="#//FunctionArgument" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FunctionParam">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="datatype" eType="#//DataType"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FunctionArgument">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="name" eType="#//Argument"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Argument">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StructVariableCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="calledStructVariable" eType="#//Struct"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Struct">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="another" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Goto">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="goto" eType="#//Label"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LabelDef">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="name" eType="#//Label"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SwitchStatment">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tempVariableRef" eType="#//TempVariable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="switchDefaultCase" upperBound="-1"
+        eType="#//SwitchDefaultCase" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="SwitchCase1" upperBound="-1"
+        eType="#//SwitchCase" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SwitchDefaultCase">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="switchLabel" eType="#//SwitchLabel"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SwitchCase">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="switchLabel" eType="#//SwitchLabel"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SwitchLabelDef">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="name" eType="#//SwitchLabel"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SwitchLabel">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Label">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="If"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AssignOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="name" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cast" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="vcall" upperBound="-1"
+        eType="#//VariableCall" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tempVariable" upperBound="-1"
+        eType="#//TempVariable" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="functionCall" upperBound="-1"
+        eType="#//FunctionCall" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="arithmeticOperation" upperBound="-1"
+        eType="#//ArithmeticOperation" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="binaryOperation" upperBound="-1"
+        eType="#//BinaryOperation" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Declaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="name" eType="#//LocalVariable"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="VariableCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="calledVaraible" eType="#//LocalVariable"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="VariableDeclaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//DataType"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="name" eType="#//LocalVariable"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExpressionTemporarie">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tempVariableL" upperBound="-1"
+        eType="#//TempVariable" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tempVariableR1" upperBound="-1"
+        eType="#//TempVariable" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="arithmeticOperation" upperBound="-1"
+        eType="#//ArithmeticOperation" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tempVariableR2" upperBound="-1"
+        eType="#//TempVariable" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TempVariable">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LocalVariable">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Function">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DebugTag">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CommentLine">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Cast"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DataType" eSuperTypes="#//Cast">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BouleanExrpession" eSuperTypes="#//If">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instruction" upperBound="-1"
+        eType="#//Instruction" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="codeBlock" upperBound="-1"
+        eType="#//CodeBlock" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ArithmeticOperation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="BinaryOperation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LogicalOperation" eSuperTypes="#//BouleanExrpession"/>
+</ecore:EPackage>

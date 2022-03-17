@@ -1,0 +1,275 @@
+grammar fr.ensma.GimpleDsl with org.eclipse.xtext.common.Terminals
+
+generate gimpleDsl "http://www.ensma.fr/GimpleDsl"
+
+
+//
+//Model: packages+=Pack*;
+//Pack: 'package' name=ID '{' functions+=Function* '}';
+//Function: 'function' name = ID '{'(defs+=Def | calls+=Call)*'}';
+//Def: 'def' name=ID;
+//Call: 'call' ref=[Def]; // same as "ref=[Def|ID]"
+//QLFN hidden(WS):ID;
+////Model : 
+////	model += ExpressionTemporarie
+////;
+////
+////ExpressionTemporarie returns ExpressionTemporarie:
+////	tempVariableL+=TempVariable '=' (tempVariableR+=TempVariable|ID|INT) '+' (tempVariableR2+=TempVariable|ID|INT) ';'
+////;
+////
+////
+////TempVariable returns TempVariable:
+////	name = TempVariablePattern
+////;
+////
+////terminal TempVariablePattern :
+////	'_'INT
+////	
+////	;
+//////SwitchStatment returns SwitchStatment:
+//////	'switch' '(' var = [SwitchLabel|QNSL] ')' ':'
+//////; 
+//////
+//////SwitchCase returns SwitchCase:
+//////	'case' INT ':' name=SwitchLabel ';' '[INV]'
+//////;
+//////
+//////SwitchLabelDef returns SwitchLabelDef:
+//////	name = SwitchLabel
+//////;
+//////
+//////SwitchLabel returns SwitchLabel:
+//////	name = QNSL ':'
+//////;
+//////
+//////QNSL:
+//////	'<'ID'>'
+//////;
+//////
+////
+//
+////Person hidden(WS, ML_COMMENT, SL_SC_COMMENT):
+////    name=Fullname age=INT ';';
+//// 
+////Fullname:
+////    (firstname=ID)? lastname=ID;
+////    
+////
+////terminal SL_SC_COMMENT:
+////    ';;' !('\n'|'\r')* ('\r'? '\n')?;
+////    
+TAC returns TAC:
+	tac += (functionDefe=FunctionDef |commentLine+=CommentLine)*;
+
+
+FunctionDef returns FunctionDef:
+	{FunctionDef}
+	function+=Function '(' (functionparam+=FunctionParam','?)* ')' '{'
+		CodeBlock+=CodeBlock
+	 '}'
+;
+
+CodeBlock returns CodeBlock:
+		{CodeBlock} instruction+=Instruction*
+		'return;'?
+;
+
+Instruction returns Instrcution:
+	variableDeclaration+=VariableDeclaration|
+	VariableCall|
+	constantDelaration+=ConstantDelaration|
+	tempVariable+=TempVariable|
+	struct+=Struct|
+	LabelDef+=LabelDef|
+	switchLabelDef+=SwitchLabelDef|
+	goto+=Goto|
+	if+=If|
+	expressionTemporarie+=ExpressionTemporarie|
+	SwitchStatment|
+	de+=DebugTag|
+	functionCall+=FunctionCall|
+	assignOp+=AssignOperation 
+;
+
+FunctionCall returns FunctionCall:
+	{FunctionCall}
+	calledFunction+=[Function] '(' ( functionArgument+=FunctionArgument','?)* ')' ';'
+;
+
+FunctionParam returns FunctionParam:
+	{FunctionParam}
+	'struct' ID '*'? ID | (datatype=DataType '*'? name=ID) 
+	
+;
+
+FunctionArgument returns FunctionArgument:
+	{FunctionArgument}
+	name = Argument
+;
+
+Argument returns Argument:
+	{Argument}
+	('&'? name = ID ('.' ID)*) | {Argument} INT
+;
+
+StructVariableCall returns StructVariableCall:
+	calledStructVariable = [Struct] '.' ID
+;
+
+Struct returns Struct:
+	{Struct}
+	'struct' name=ID '*'? another = ID   ';'
+;
+Goto returns Goto:
+	{Goto}
+	'goto' goto = [Label|QualifiedName]  ';' '[INV]'
+;
+
+LabelDef returns LabelDef:
+	{LabelDef}
+	name = Label
+	;
+	
+
+SwitchStatment returns SwitchStatment:
+	'switch' '(' tempVariableRef = [TempVariable|TEMP_VARIABLE_PATTERN] ')' '<' switchDefaultCase+=SwitchDefaultCase SwitchCase1+=SwitchCase* '>';
+
+SwitchDefaultCase returns SwitchDefaultCase:
+	name = 'default' ':'  switchLabel = [SwitchLabel|QNSL]  '[INV]'?','
+;
+
+
+SwitchCase returns SwitchCase:
+	name = CASE_ID ':'  switchLabel = [SwitchLabel|QNSL]  '[INV]'?','?
+;
+
+terminal CASE_ID:
+	'case ' INT
+;
+
+SwitchLabelDef returns SwitchLabelDef:
+	name = SwitchLabel
+;
+
+SwitchLabel returns SwitchLabel:
+	name = QNSL ':'
+;
+
+QNSL:
+	'<'ID'>'
+;
+
+Label returns Label:
+	{Label}
+	  name = QualifiedName ':'
+	;
+	
+QualifiedName :
+ '<' ID INT '>'
+;
+
+If returns If:
+	'if' '(' BooleanExpression ')'  
+		(instruction += Instruction |
+	'{'
+		codeBlock += CodeBlock
+	'}')
+	;
+	
+
+	
+AssignOperation returns AssignOperation:
+	{AssignOperation}
+	 (name =VariableCall |name = TempVariable |name =StructVariableCall)  '=' cast?=Cast? ((
+																vcall+=VariableCall/* ))/* */
+																|tempVariable+=TempVariable|
+																 INT| '&'
+																'{CLOBBER}'|functionCall+=FunctionCall ) 
+																(('->' ID))  | arithmeticOperation+=ArithmeticOperation | binaryOperation+=BinaryOperation)*/**/ ';'
+	
+;
+
+ConstantDelaration returns Declaration:
+	'const' name = LocalVariable
+;
+
+
+VariableCall:
+	calledVaraible=[LocalVariable]
+;
+
+VariableDeclaration returns VariableDeclaration :
+	type=DataType name = LocalVariable';'
+;
+
+
+ExpressionTemporarie returns ExpressionTemporarie:
+	tempVariableL+=TempVariable '=' (tempVariableR1+=TempVariable|ID|INT) (arithmeticOperation+=ArithmeticOperation (tempVariableR2+=TempVariable|ID|INT))* ';'
+;
+
+
+TempVariable returns TempVariable:
+	name = TEMP_VARIABLE_PATTERN
+;
+
+terminal TEMP_VARIABLE_PATTERN :
+	'_'INT
+	
+;
+
+LocalVariable returns LocalVariable:
+	name = VARIABLE_INDENTIFIER
+;
+
+VARIABLE_INDENTIFIER:
+ 	ID  ('_' (ID|INT))*
+;
+
+Function returns Function:
+	{Function}
+	name=ID;
+	
+
+DebugTag returns DebugTag:
+	name = DEBUG_BEGIN
+;	
+	
+terminal DEBUG_BEGIN: 
+	'# DEBUG BEGIN_STMT' 
+;
+
+CommentLine returns CommentLine:
+	name=SL_SC_COMMENT
+;
+
+
+terminal SL_SC_COMMENT:
+    ';;' !('\n'|'\r')* ('\r'? '\n')?
+;
+
+
+Cast returns Cast:
+	'(' 'short'?  ('signed' |'unsigned')? DataType ')'
+;
+
+DataType returns DataType:
+	{DataType}
+	name = ('float'| 'int' | 'uint8_t'|'int16_t' | 'char')
+;
+
+BooleanExpression returns BouleanExrpession:
+	ID LogicalOperation INT;
+
+ArithmeticOperation returns ArithmeticOperation:
+	{ArithmeticOperation} '+' | {ArithmeticOperation} '-' | {ArithmeticOperation} '*' | {ArithmeticOperation} '/' ;
+
+BinaryOperation returns BinaryOperation:
+	{BinaryOperation} '&' | {BinaryOperation} '|'
+;
+
+LogicalOperation returns LogicalOperation:
+	{LogicalOperation} 'and' | {LogicalOperation} 'or' | {LogicalOperation} '=<' | {LogicalOperation} '<' | {LogicalOperation} '>' | {LogicalOperation} '=>' | {LogicalOperation} '==' | {LogicalOperation} '!=';
+	
+	
+	

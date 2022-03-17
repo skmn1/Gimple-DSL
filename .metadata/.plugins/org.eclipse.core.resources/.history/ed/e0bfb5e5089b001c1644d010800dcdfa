@@ -1,0 +1,5 @@
+package fr.ensma.generator;
+
+public interface ITACGenerator {
+
+}
